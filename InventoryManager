@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour, IGameManager {
 	public ManagerStatus status { get; private set; }
+	
+	//WHAT TO DO IN UNITY
+	//You must make an empty gameobject called GameManager and attach the InventoryManager, PlayerManager, and Managers scripts to the gameobject.
 
 	//This holds the names of all of the items in the inventory as well as how many the player has of each item.
 	private Dictionary<string, int> _items;
