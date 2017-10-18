@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerManager : MonoBehaviour, IGameManager {
+	public ManagerStatus status { get; private set; }
+
+	//This makes these variables retreivable in other scripts.
+	public int health { get; private set; }
+	public int maxHealth {get; private set;}
+
+	public void Startup() {
+		Debug.Log ("Player manager starting...");
+
+		health = 50;
+		maxHealth = 100;
+
+		status = ManagerStatus.Started;
+	}
+
+	//This function is called on when the player uses a health pack which is stored as "value" in another script.
+	public void ChangeHealth(int value) {
+		health += value;
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+		else if (health < 0){
+			health = 0;
+		}
+
+		Debug.Log ("Health: " + health + "/" + maxHealth);
+
+	}
+}
