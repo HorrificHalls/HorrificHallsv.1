@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicUI : MonoBehaviour {
+	
+	//WHAT TO DO IN UNITY
+	//Make an empty gameobject called Controller and attach this script to it.
+	
 	void OnGUI() {
 		int posX = 10;
 		int posY = 10;
