@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleItem : MonoBehaviour {
+	
+	//The collectible item must have a trigger and the name of the collectible item should be descriptive such as "health" or "coin"
+	
 	[SerializeField] private string itemName;
 	
 	//This script gets placed on items that can be picked up. When the item is picked up, it is added to the InventoryManager.
