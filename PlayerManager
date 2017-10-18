@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour, IGameManager {
+
+	//WHAT TO DO IN UNITY
+	//You must make an empty gameobject called GameManager and attach the InventoryManager, PlayerManager, and Managers scripts to the gameobject.
+
 	public ManagerStatus status { get; private set; }
 
 	//This makes these variables retreivable in other scripts.
