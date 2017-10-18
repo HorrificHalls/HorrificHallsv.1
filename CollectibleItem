@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CollectibleItem : MonoBehaviour {
 	[SerializeField] private string itemName;
-
+	
+	//This script gets placed on items that can be picked up. When the item is picked up, it is added to the InventoryManager.
 	void OnTriggerEnter (Collider other) {
 		Managers.Inventory.AddItem (itemName);
 		Destroy (this.gameObject);
