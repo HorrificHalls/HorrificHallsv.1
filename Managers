@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicUI : MonoBehaviour {
+
+	//WHAT TO DO IN UNITY
+	//You must make an empty gameobject called GameManager and attach the InventoryManager, PlayerManager, and Managers scripts to the gameobject.
+	
 	void OnGUI() {
 		int posX = 10;
 		int posY = 10;
