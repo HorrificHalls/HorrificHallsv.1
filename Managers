@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BasicUI : MonoBehaviour {
+	void OnGUI() {
+		int posX = 10;
+		int posY = 10;
+		int width = 120;
+		int height = 50;
+		int buffer = 15;
+
+
+		//This retreives the inventory from the InventoryManager.
+		List <string> itemList = Managers.Inventory.GetItemList ();
+		if (itemList.Count == 0) {
+			GUI.Box (new Rect (posX, posY, width, height), "No Items");
+		}
+
+		//For each item in the inventory, the corresponding texture is retreive and the item is displayed in the top left of the UI.
+		//The UI will also display the amount of each item in the UI next to the texture.
+		foreach (string item in itemList) {
+			int count = Managers.Inventory.GetItemCount (item);
+			Texture2D image = Resources.Load<Texture2D> ("Icons/" + item);
+			GUI.Box (new Rect (posX, posY, width, height), new GUIContent ("[" + count + "]", image));
+			posX += width + buffer;
+		}
+
+		//This retreives the variable from InventoryManager for what is equipped and displays the equipped item in the top middle of the UI. 
+		string equipped = Managers.Inventory.equippedItem;
+		if (equipped != null) {
+			posX = Screen.width - (Screen.width / 2) - (width);
+			Texture2D image = Resources.Load<Texture2D> ("Icons/" + equipped) as Texture2D;
+			GUI.Box (new Rect (posX, posY, width, height), new GUIContent ("Equipped ", image));
+		}
+
+		posX = 10;
+		posY += height + buffer;
+
+		//For each item that the player has, the "Equip item" button will be displayed below in the UI.
+		foreach (string item in itemList) {
+			if (GUI.Button (new Rect (posX, posY, width, height), "Equip " + item)) {
+				Managers.Inventory.EquipItem (item);
+			}
+
+			//If the item in the inventory is health, there will also be a button to "Use Health" drawn below the "Equip item" button.
+			if (item == "Health") {
+				if (GUI.Button (new Rect (posX, posY + height + buffer, width, height), "Use Health")) {
+					Managers.Inventory.ConsumeItem ("Health");
+					Managers.Player.ChangeHealth (25);
+				}
+			}
+			posX += width + buffer;
+		}
+
+
+		//Draws the player health on the bottom left of the screen.
+		posX = 10;
+		int health = Managers.Player.health;
+		posY = Screen.height - (height + buffer);
+		Texture2D healthimage = Resources.Load<Texture2D> ("Icons/Health") as Texture2D;
+		GUI.Box (new Rect (posX, posY, width, height), new GUIContent (health.ToString(), healthimage));
+	}
+}
