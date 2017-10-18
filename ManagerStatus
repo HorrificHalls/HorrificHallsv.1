@@ -1,4 +1,8 @@
 public enum ManagerStatus {
+
+	//WHAT TO DO IN UNITY
+	//You must make an empty gameobject called GameManager and attach the InventoryManager, PlayerManager, and Managers scripts to the gameobject.
+	
 	Shutdown,
 	Initializing,
 	Started
