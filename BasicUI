@@ -6,6 +6,8 @@ public class BasicUI : MonoBehaviour {
 	
 	//WHAT TO DO IN UNITY
 	//Make an empty gameobject called Controller and attach this script to it.
+	//In the project folder, there needs to be a folder called "Resources" and within that folder a folder called "Icons" which has all...
+	//...of the 2D images for the UI with names that correspond to the items in the game.
 	
 	void OnGUI() {
 		int posX = 10;
