@@ -2,67 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicUI : MonoBehaviour {
+[RequireComponent(typeof(PlayerManager))]
+[RequireComponent(typeof(InventoryManager))]
 
-	//WHAT TO DO IN UNITY
-	//You must make an empty gameobject called GameManager and attach the InventoryManager, PlayerManager, and Managers scripts to the gameobject.
-	
-	void OnGUI() {
-		int posX = 10;
-		int posY = 10;
-		int width = 120;
-		int height = 50;
-		int buffer = 15;
+public class Managers : MonoBehaviour {
+	public static PlayerManager Player { get; private set; }
+	public static InventoryManager Inventory { get; private set; }
 
+	private List<IGameManager> _startSequence;
 
-		//This retreives the inventory from the InventoryManager.
-		List <string> itemList = Managers.Inventory.GetItemList ();
-		if (itemList.Count == 0) {
-			GUI.Box (new Rect (posX, posY, width, height), "No Items");
+	void Awake() {
+		Player = GetComponent<PlayerManager> ();
+		Inventory = GetComponent<InventoryManager> ();
+
+		_startSequence = new List<IGameManager> ();
+		_startSequence.Add (Player);
+		_startSequence.Add (Inventory);
+
+		StartCoroutine (StartupManagers ());
+	}
+
+	private IEnumerator StartupManagers() {
+		foreach (IGameManager manager in _startSequence) {
+			manager.Startup ();
 		}
+		yield return null;
 
-		//For each item in the inventory, the corresponding texture is retreive and the item is displayed in the top left of the UI.
-		//The UI will also display the amount of each item in the UI next to the texture.
-		foreach (string item in itemList) {
-			int count = Managers.Inventory.GetItemCount (item);
-			Texture2D image = Resources.Load<Texture2D> ("Icons/" + item);
-			GUI.Box (new Rect (posX, posY, width, height), new GUIContent ("[" + count + "]", image));
-			posX += width + buffer;
-		}
+		int numModules = _startSequence.Count;
+		int numReady = 0;
 
-		//This retreives the variable from InventoryManager for what is equipped and displays the equipped item in the top middle of the UI. 
-		string equipped = Managers.Inventory.equippedItem;
-		if (equipped != null) {
-			posX = Screen.width - (Screen.width / 2) - (width);
-			Texture2D image = Resources.Load<Texture2D> ("Icons/" + equipped) as Texture2D;
-			GUI.Box (new Rect (posX, posY, width, height), new GUIContent ("Equipped ", image));
-		}
+		while (numReady < numModules) {
+			int lastReady = numReady;
+			numReady = 0;
 
-		posX = 10;
-		posY += height + buffer;
-
-		//For each item that the player has, the "Equip item" button will be displayed below in the UI.
-		foreach (string item in itemList) {
-			if (GUI.Button (new Rect (posX, posY, width, height), "Equip " + item)) {
-				Managers.Inventory.EquipItem (item);
-			}
-
-			//If the item in the inventory is health, there will also be a button to "Use Health" drawn below the "Equip item" button.
-			if (item == "Health") {
-				if (GUI.Button (new Rect (posX, posY + height + buffer, width, height), "Use Health")) {
-					Managers.Inventory.ConsumeItem ("Health");
-					Managers.Player.ChangeHealth (25);
+			foreach (IGameManager manager in _startSequence) {
+				if (manager.status == ManagerStatus.Started) {
+					numReady++;
 				}
 			}
-			posX += width + buffer;
+			if (numReady > lastReady)
+				Debug.Log ("Progress: " + numReady + "/" + numModules);
+			yield return null;
 		}
-
-
-		//Draws the player health on the bottom left of the screen.
-		posX = 10;
-		int health = Managers.Player.health;
-		posY = Screen.height - (height + buffer);
-		Texture2D healthimage = Resources.Load<Texture2D> ("Icons/Health") as Texture2D;
-		GUI.Box (new Rect (posX, posY, width, height), new GUIContent (health.ToString(), healthimage));
+		Debug.Log ("All managers started up");
 	}
 }
