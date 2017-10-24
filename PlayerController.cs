@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
 
 	private bool isCrouched;
 
+	private bool canSeeCursor = false;
+
 	public float moveY;
 	public float moveX;
 	public float rotateY;
@@ -21,11 +23,22 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 
 		player = GetComponent<CharacterController>();
+		Cursor.visible = false;
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKeyDown (KeyCode.Q) && !canSeeCursor) {
+			Cursor.visible = true;
+			canSeeCursor = true;
+		} 
+
+		else if ((canSeeCursor) && (Input.GetKeyDown (KeyCode.Q))) {
+			Cursor.visible = false;
+			canSeeCursor = false;
+		}
+
 
 		moveY = Input.GetAxis ("Vertical") * speed;
 		moveX = Input.GetAxis ("Horizontal") * speed;
@@ -45,7 +58,6 @@ public class PlayerController : MonoBehaviour {
 				player.height = 1.0f;
 				isCrouched = true;
 			} 
-
 			else {
 				player.height = 2.0f;
 				isCrouched = false;
