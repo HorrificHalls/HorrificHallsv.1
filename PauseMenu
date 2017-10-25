@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PauseMenu : MonoBehaviour {
+
+	bool paused = false;
+
+	int posX = 10;
+	int posY = 100;
+	int width = 200;
+	int height = 50;
+	int buffer = 15;
+
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (Input.GetKeyDown(KeyCode.M)) {
+			paused = !paused;
+		}
+	}
+
+
+	void OnGUI (){
+		if (paused) {
+			Cursor.visible = true;
+			GUIStyle centeredTextStyle = new GUIStyle ("label");
+			centeredTextStyle.alignment = TextAnchor.MiddleCenter;
+			centeredTextStyle.fontSize = 30;
+
+			posX = Screen.width - (Screen.width / 2) - (width / 2);
+			GUI.Label (new Rect (posX, posY, width, height), "PauseMenu", centeredTextStyle);
+			if (GUI.Button (new Rect (posX, posY + height + buffer, width, height), "Resume Game")) {
+				paused = !paused;
+				Cursor.visible = false;
+			}
+
+
+		}
+	}
+}
