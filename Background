@@ -1,0 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Background : MonoBehaviour {
+	public Texture background;
+	public Camera GUIcamera;
+
+	int posX = Screen.width / 2;
+	int posY = Screen.height / 2;
+	int width = Screen.width;
+	int height = Screen.height;
+	int buffer = 15;
+
+
+	private bool onMenu = true;
+
+	public Texture2D grayTexture;
+
+
+	void OnGUI (){
+		if (onMenu) {
+			GUI.DrawTexture(new Rect (0, 0, width, height),background, ScaleMode.ScaleToFit, true, 1.78f);
+
+			int posX = 10;
+			int posY = 100;
+			int hwidth = 500;
+			int hheight = 100;
+			int buffer = 15;
+
+			GUIStyle centeredTextStyle = new GUIStyle ("label");
+			centeredTextStyle.alignment = TextAnchor.MiddleCenter;
+			centeredTextStyle.fontSize = 80;
+
+			GUIStyle buttonTextStyle = new GUIStyle ("Label");
+			buttonTextStyle.alignment = TextAnchor.MiddleCenter;
+			buttonTextStyle.fontSize = 60;
+			buttonTextStyle.normal.background = grayTexture;
+
+			posX = Screen.width - (Screen.width / 2) - (hwidth / 2);
+			GUI.Label (new Rect (posX, posY, hwidth, hheight), "Horrific Halls", centeredTextStyle);
+			if (GUI.Button (new Rect (posX, posY + hheight + buffer, hwidth, hheight), "Start Game", buttonTextStyle)) {
+				SceneManager.LoadScene ("Scene");
+				onMenu = !onMenu;
+
+			}
+
+		}
+		GUIcamera.Render ();
+	}
+
+
+}
