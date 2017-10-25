@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Background : MonoBehaviour {
+
+	//Place this script on the Camera in the Main Menu Scene. Then drag the background image, the Camera, and the button texture to this.
+	//Also you have to make a particle system for the fog. The scene is pretty complicated to get the particles to render on top of the UI, but contact Adam for the assets.
+	
 	public Texture background;
 	public Camera GUIcamera;
 
